@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JY2301的个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS变量定义 - 默认深色模式 */
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --accent: #7e57c2;
+            --accent-light: #9575cd;
+            --accent-dark: #5e35b1;
+            --card-bg: #1d1d1d;
+            --shadow: rgba(0, 0, 0, 0.25);
+            --icon-filter: invert(85%);
+            --transition-speed: 0.4s;
+            --section-divider: #333;
+        }
+
+        /* 浅色模式变量 */
+        [data-theme="light"] {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --icon-filter: invert(15%);
+            --section-divider: #dee2e6;
+        }
+        
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 导航栏 */
+        nav {
+            background-color: var(--bg-secondary);
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent-light);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--accent);
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(15deg);
+        }
+        
+        .theme-toggle i {
+            filter: var(--icon-filter);
+        }
+        
+        /* 主内容区 */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--section-divider);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            margin-bottom: 1.2rem;
+            font-size: 1.7rem;
+            color: var(--accent-light);
+        }
+        
+        /* 首页样式 */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(120deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+        
+        .featured-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .post-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .post-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--accent-dark), var(--accent-light));
+            position: relative;
+        }
+        
+        .post-content {
+            padding: 1.5rem;
+        }
+        
+        .post-content h3 {
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+        
+        .post-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        
+        .read-more {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--accent);
+        }
+        
+        .read-more:hover {
+            color: var(--accent-light);
+            border-color: var(--accent-light);
+        }
+        
+        /* 技术模块样式 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .skill-item:hover {
+            background-color: var(--accent-dark);
+            transform: scale(1.05);
+        }
+        
+        .skill-item i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-light);
+        }
+        
+        .skill-item:hover i {
+            color: white;
+        }
+        
+        /* 生活模块样式 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+            background: linear-gradient(45deg, #5e35b1, #7e57c2);
+        }
+        
+        .gallery-item:hover::before {
+            content: attr(data-title);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* 关于模块样式 */
+        .about-content {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        
+        .profile-image {
+            min-width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent-light));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .contact-form {
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--section-divider);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.25);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+            color: white;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(126, 87, 194, 0.3);
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .spin {
+            animation: spin 0.5s ease;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">JY2301<span>博客</span></a>
+            <div class="nav-actions">
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" data-target="home">首页</a>
+                    <a href="#" class="nav-link" data-target="technology">技术</a>
+                    <a href="#" class="nav-link" data-target="life">生活</a>
+                    <a href="#" class="nav-link" data-target="about">关于</a>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" title="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容容器 -->
+    <main>
+        <!-- 首页 -->
+        <div id="home-page" class="page active">
+            <section class="hero fade-in">
+                <h1>探索技术与生活的美妙世界</h1>
+                <p>欢迎来到我的个人空间，这里记录我的技术探索、生活感悟和创作灵感。每一行代码、每一段文字都是思想的碰撞，期待与你分享。</p>
+            </section>
+            
+            <section class="card">
+                <h2>最新文章</h2>
+                <div class="featured-posts">
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>深入理解现代 JavaScript 框架</h3>
+                            <p>探索React、Vue和Angular的核心原理，了解其设计哲学和优化策略...</p>
+                            <a href="#" class="read-more">阅读更多</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>2023年度前端趋势分析</h3>
+                            <p>从WebAssembly到Serverless，从低代码到智能UI，前端技术日新月异...</p>
+                            <a href="#" class="read-more">阅读更多</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>我的云南徒步日记</h3>
+                            <p>穿越神秘的高原湖泊，探索少数民族文化，七天六夜的难忘旅程...</p>
+                            <a href="#" class="read-more">阅读更多</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card">
+                <h2>精选项目</h2>
+                <div class="featured-posts">
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>智能家居控制系统</h3>
+                            <p>基于物联网技术的家居自动化系统，支持场景定制和语音控制...</p>
+                            <a href="#" class="read-more">查看详情</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>数据可视化平台</h3>
+                            <p>基于D3.js的交互式数据展示系统，助力企业决策分析...</p>
+                            <a href="#" class="read-more">查看详情</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-image"></div>
+                        <div class="post-content">
+                            <h3>AI创作助手</h3>
+                            <p>结合NLP和深度学习的内容创作工具，提升写作效率...</p>
+                            <a href="#" class="read-more">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 技术页面 -->
+        <div id="technology-page" class="page">
+            <section class="card fade-in">
+                <h2>技术专题</h2>
+                <p>分享前端开发、后端架构、DevOps实践和技术选型方面的经验与见解。</p>
+                
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fas fa-code"></i>
+                        <h3>前端开发</h3>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-server"></i>
+                        <h3>后端架构</h3>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>移动端</h3>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>网络安全</h3>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>数据科学</h3>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-robot"></i>
+                        <h3>人工智能</h3>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card">
+                <h2>最新技术文章</h2>
+                
+                <div class="post-list">
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 100px; background: var(--accent-dark); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>Web3.0时代的前端开发范式</h3>
+                            <p>探索去中心化应用（DApp）的前端开发特点和技术方案，解析智能合约交互原理...</p>
+                            <a href="#" class="read-more">阅读全文</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 100px; background: var(--accent-light); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>微前端架构实践指南</h3>
+                            <p>如何在大型项目中实施微前端架构，解决团队协作和独立部署问题...</p>
+                            <a href="#" class="read-more">阅读全文</a>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 100px; background: var(--accent); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>使用WebAssembly优化前端性能</h3>
+                            <p>通过案例学习如何利用WebAssembly加速前端计算密集型任务...</p>
+                            <a href="#" class="read-more">阅读全文</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 生活页面 -->
+        <div id="life-page" class="page">
+            <section class="card fade-in">
+                <h2>生活随笔</h2>
+                <p>记录旅行中的见闻、摄影作品、读书笔记和日常感悟，在代码之外寻找生活的诗意。</p>
+                
+                <div class="gallery">
+                    <div class="gallery-item" data-title="京都·古寺枫叶"></div>
+                    <div class="gallery-item" data-title="大理·苍山洱海"></div>
+                    <div class="gallery-item" data-title="青岛·海滨落日"></div>
+                    <div class="gallery-item" data-title="书桌·工作角落"></div>
+                    <div class="gallery-item" data-title="重庆·山城夜景"></div>
+                    <div class="gallery-item" data-title="摄影·城市掠影"></div>
+                </div>
+            </section>
+            
+            <section class="card">
+                <h2>读书笔记</h2>
+                
+                <div class="post-list">
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 150px; background: var(--accent); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>《三体》中的宇宙社会学</h3>
+                            <p>黑暗森林法则在现实世界的映射，如何理解文明之间的猜疑链...</p>
+                            <p style="color: var(--accent-light); margin-top: 0.5rem;">2023-09-15</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 150px; background: var(--accent-dark); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>《人类简史》读书笔记</h3>
+                            <p>从认知革命到科技革命，人类社会的发展轨迹与未来展望...</p>
+                            <p style="color: var(--accent-light); margin-top: 0.5rem;">2023-08-22</p>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="display: flex; margin-bottom: 1.5rem;">
+                        <div style="min-width: 120px; height: 150px; background: var(--accent-light); margin-right: 1.5rem; border-radius: 8px;"></div>
+                        <div>
+                            <h3>《设计心理学》感悟</h3>
+                            <p>如何从用户角度设计产品，避免不必要的认知负担...</p>
+                            <p style="color: var(--accent-light); margin-top: 0.5rem;">2023-07-30</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 关于页面 -->
+        <div id="about-page" class="page">
+            <section class="card fade-in">
+                <h2>关于我</h2>
+                
+                <div class="about-content">
+                    <div class="profile-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="about-text">
+                        <p>你好！我是JY2301，一名全栈开发工程师和技术博主，专注于构建优雅高效的数字产品。</p>
+                        <p>我有8年的软件开发经验，曾在科技创业公司和大型互联网企业任职。目前专注于前端工程化、Web3.0应用和AI工程化实践。</p>
+                        <p>工作之外，我热爱旅行摄影、登山徒步和阅读科幻小说。我相信技术应该服务于人类的美好生活，而不是相反。</p>
+                        <p>这个博客记录了我的技术思考和生活感悟，旨在分享有价值的内容，也作为我的数字笔记本。</p>
+                        
+                        <h3 style="margin-top: 1.5rem;">职业经历</h3>
+                        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>edu (2020-至今)</li>
+                            <li>edu (2018-2020)</li>
+                            <li>edu (2015-2018)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card">
+                <h2>联系我juyuan52301@outlook.com</h2>
+                <p>如果你对我的文章有任何想法或建议，欢迎与我联系。</p>
+                
+                <div class="contact-form">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" class="form-control" placeholder="您的姓名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" class="form-control" placeholder="您的邮箱">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">留言内容</label>
+                        <textarea id="message" class="form-control" placeholder="请输入您的留言..."></textarea>
+                    </div>
+                    
+                    <button class="submit-btn">发送留言</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://github.com/JY52301"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-qq"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>以代码为笔，描绘数字世界的无限可能</p>
+            <div class="copyright">
+                © 2025 JY2301| 基于深度思考与创意实践
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // 检查用户之前是否选择了主题
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // 设置初始主题
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else {
+                // 没有保存的主题时，使用系统偏好
+                document.documentElement.setAttribute('data-theme', systemPrefersDark ? 'dark' : 'light');
+            }
+            
+            // 更新按钮图标
+            updateThemeIcon();
+            
+            // 主题切换功能
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                // 应用新主题
+                document.documentElement.setAttribute('data-theme', newTheme);
+                
+                // 添加图标旋转动画
+                themeIcon.classList.add('spin');
+                setTimeout(() => {
+                    themeIcon.classList.remove('spin');
+                }, 500);
+                
+                // 保存主题偏好
+                localStorage.setItem('theme', newTheme);
+                
+                // 更新按钮图标
+                updateThemeIcon();
+            });
+            
+            // 更新主题图标
+            function updateThemeIcon() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'light') {
+                    themeIcon.className = 'fas fa-moon';
+                } else {
+                    themeIcon.className = 'fas fa-sun';
+                }
+            }
+            
+            // 页面导航功能
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('data-target');
+                    
+                    // 更新导航栏激活状态
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 切换页面内容
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                        if (page.id === `${target}-page`) {
+                            setTimeout(() => {
+                                page.classList.add('active');
+                            }, 10);
+                        }
+                    });
+                    
+                    // 滚动到页面顶部
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // 初始化页面元素动画效果
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.card, .gallery-item, .skill-item').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
